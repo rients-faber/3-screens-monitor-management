@@ -20,6 +20,16 @@ APPDIR="build/$APP.app"
 mkdir -p "$APPDIR/Contents/MacOS" "$APPDIR/Contents/Resources"
 lipo -create -output "$APPDIR/Contents/MacOS/$APP" "build/$APP-arm64" "build/$APP-x86_64"
 sed "s/__VERSION__/$VERSION/g" Resources/Info.plist > "$APPDIR/Contents/Info.plist"
+
+# App-icoon (.icns) maken uit Resources/AppIcon.png
+ICONSET="build/AppIcon.iconset"
+mkdir -p "$ICONSET"
+for SIZE in 16 32 128 256 512; do
+  sips -z $SIZE $SIZE Resources/AppIcon.png --out "$ICONSET/icon_${SIZE}x${SIZE}.png" >/dev/null
+  DOUBLE=$((SIZE * 2))
+  sips -z $DOUBLE $DOUBLE Resources/AppIcon.png --out "$ICONSET/icon_${SIZE}x${SIZE}@2x.png" >/dev/null
+done
+iconutil -c icns "$ICONSET" -o "$APPDIR/Contents/Resources/AppIcon.icns"
 codesign --force --deep --sign - "$APPDIR"
 
 STAGE="build/dmg"
