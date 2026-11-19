@@ -211,10 +211,10 @@ final class AppController: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     private func makeIcon(left: IconState, middle: IconState, right: IconState) -> NSImage {
-        let rectW: CGFloat = 15
-        let rectH: CGFloat = 11
-        let gap: CGFloat = 3
-        let size = NSSize(width: rectW * 3 + gap * 2 + 2, height: 18)
+        let rectW: CGFloat = 18
+        let rectH: CGFloat = 13
+        let gap: CGFloat = 6
+        let size = NSSize(width: rectW * 3 + gap * 2 + 2, height: 20)
 
         let image = NSImage(size: size, flipped: false) { bounds in
             NSColor.black.set()
@@ -223,8 +223,8 @@ final class AppController: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 let rect = NSRect(x: 1 + CGFloat(index) * (rectW + gap), y: y, width: rectW, height: rectH)
                 switch state {
                 case .on:
-                    let path = NSBezierPath(rect: rect.insetBy(dx: 0.9, dy: 0.9))
-                    path.lineWidth = 1.8
+                    let path = NSBezierPath(rect: rect.insetBy(dx: 1, dy: 1))
+                    path.lineWidth = 2
                     path.stroke()
                 case .off:
                     NSBezierPath(rect: rect).fill()
