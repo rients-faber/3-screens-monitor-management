@@ -4,7 +4,7 @@
 set -euo pipefail
 
 APP=Schermbeheer
-VERSION="${VERSION:-1.0.0}"
+VERSION="${VERSION:-$(cat VERSION 2>/dev/null || echo 1.0.0)}"
 cd "$(dirname "$0")"
 
 SDK="$(xcrun --sdk macosx --show-sdk-path)"

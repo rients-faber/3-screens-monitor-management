@@ -3,7 +3,6 @@ name: Build DMG
 on:
   push:
     branches: ['**']
-    tags: ['v*']
   workflow_dispatch:
 
 permissions:
@@ -17,7 +16,7 @@ jobs:
 
       - name: Build app and DMG
         run: |
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then export VERSION="${GITHUB_REF_NAME#v}"; fi
+          echo "VERSION=$(cat VERSION)" >> "$GITHUB_ENV"
           ./build.sh
 
       - uses: actions/upload-artifact@v4
@@ -25,8 +24,17 @@ jobs:
           name: Schermbeheer-dmg
           path: build/*.dmg
 
+      # Every push to main publishes (or updates) the release for the version in VERSION.
       - name: Publish release
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ env.VERSION }}
+          name: Schermbeheer ${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
           files: build/*.dmg
+          body: |
+            Download **Schermbeheer-${{ env.VERSION }}.dmg** below, open it and drag Schermbeheer to Applications.
+            Download **Schermbeheer-${{ env.VERSION }}.dmg** hieronder, open hem en sleep Schermbeheer naar Programma's.
+
+            First launch: the app is not notarized — see the README. / Eerste keer openen: zie de README.

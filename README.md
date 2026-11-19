@@ -63,8 +63,8 @@ cd 3-screens-monitor-management
 ./build.sh
 ```
 
-The DMG ends up in `build/`. GitHub Actions also builds the DMG on every push; a tag like `v1.2.3`
-publishes it as a release.
+The DMG ends up in `build/`. GitHub Actions also builds the DMG on every push; a push to `main` publishes it as a release
+using the version number in the `VERSION` file.
 
 ---
 
@@ -123,5 +123,5 @@ cd 3-screens-monitor-management
 ./build.sh
 ```
 
-De DMG komt in `build/`. GitHub Actions bouwt de DMG ook automatisch bij elke push; een tag
-`v1.2.3` maakt er een release van.
+De DMG komt in `build/`. GitHub Actions bouwt de DMG ook automatisch bij elke push; een push naar `main` maakt er een
+release van met het versienummer uit het bestand `VERSION`.
