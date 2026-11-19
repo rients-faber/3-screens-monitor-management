@@ -250,10 +250,8 @@ final class AppController: NSObject, NSApplicationDelegate, NSMenuDelegate {
         statusItem.button?.performClick(nil)
     }
 
-    nonisolated func menuDidClose(_ menu: NSMenu) {
-        MainActor.assumeIsolated {
-            statusItem.menu = nil
-        }
+    func menuDidClose(_ menu: NSMenu) {
+        statusItem.menu = nil
     }
 
     private func buildMenu() -> NSMenu {
@@ -338,8 +336,16 @@ final class AppController: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
 // MARK: - Entry point
 
-let app = NSApplication.shared
-let controller = AppController()
-app.delegate = controller
-app.setActivationPolicy(.accessory) // menu bar only, no Dock icon
-app.run()
+@main
+struct SchermbeheerMain {
+    @MainActor
+    static func main() {
+        let app = NSApplication.shared
+        let controller = AppController()
+        app.delegate = controller
+        app.setActivationPolicy(.accessory) // menu bar only, no Dock icon
+        withExtendedLifetime(controller) {
+            app.run()
+        }
+    }
+}
